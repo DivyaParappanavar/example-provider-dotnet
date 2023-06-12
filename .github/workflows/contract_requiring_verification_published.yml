@@ -1,27 +1,25 @@
-name: contract_requiring_verification_published
-
-# This workflow leverages the https://docs.pact.io/pact_broker/webhooks#the-contract-requiring-verification-published-event webhook
+name : contract_requiring_verification_published
 
 on:
   repository_dispatch:
     types:
       - contract_requiring_verification_published
   workflow_dispatch:
-    # inputs aren't available on push, so we set them explicitly in separate steps
     inputs:
       PACT_URL:
         description: URL of pact to verify
         required: true
-
+        
+        
 env:
-  PACT_BROKER_BASE_URL: https://asia.pactflow.io
+  PACT_BROKER_BASE_URL: https://dellteam.pactflow.io
   PACT_BROKER_TOKEN: ${{ secrets.PACTFLOW_TOKEN_FOR_CI_CD_WORKSHOP }}
   PACT_BROKER_PUBLISH_VERIFICATION_RESULTS: true
   PACT_URL: ${{ github.event.client_payload.pact_url }}
   GIT_COMMIT: ${{ github.event.client_payload.sha }}
   GIT_BRANCH: ${{ github.event.client_payload.branch }}
   DESCRIPTION: ${{ github.event.client_payload.message }}
-
+  
 jobs:
   verify-contract-requiring-verification:
     runs-on: ubuntu-latest
